@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AuthResponse, UserRegisterRequest } from '../shared/models/auth.model';
+import { AuthResponse, UserRegisterRequest, LoginRequest } from '../shared/models/auth.model';
 import { catchError, Observable, throwError, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +13,13 @@ export class AuthService {
 
   register(data: UserRegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.BASE_URL}/register`, data).pipe(
+      tap(response => this.saveSession(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  login(body: LoginRequest) {
+    return this.http.post<AuthResponse>(`${this.BASE_URL}/login`, body).pipe(
       tap(response => this.saveSession(response)),
       catchError(this.handleError)
     );

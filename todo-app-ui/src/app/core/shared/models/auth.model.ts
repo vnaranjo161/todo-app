@@ -5,6 +5,11 @@ export interface UserRegisterRequest {
   pasword: string;
 }
 
+export interface LoginRequest {
+  email: string;
+  pasword: string;
+}
+
 export interface AuthResponse {
   token: string;
   name: string;
