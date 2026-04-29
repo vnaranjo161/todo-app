@@ -9,6 +9,11 @@ import { UserRegisterRequest } from '../../core/shared/models/auth.model';
   imports: [RegisterFormComponent, RouterLink],
   templateUrl: './register.page.html'
 })
+/**
+ * @description Registration page that hosts the register form and handles form submission
+ * @export
+ * @class RegisterPage
+ */
 export class RegisterPage {
   loading = false;
 

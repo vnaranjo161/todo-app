@@ -8,6 +8,11 @@ import { LabelComponent } from "../../atoms/label/label.component";
   imports: [InputComponent, LabelComponent],
   templateUrl: './form-field.component.html'
 })
+/**
+ * @description Form field molecule combining a label, input, and validation error messages
+ * @export
+ * @class FormFieldComponent
+ */
 export class FormFieldComponent {
   label = input.required<string>();
   inputId = input.required<string>();

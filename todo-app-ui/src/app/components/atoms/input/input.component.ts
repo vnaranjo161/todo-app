@@ -7,6 +7,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   imports: [ReactiveFormsModule, NgClass],
   templateUrl: './input.component.html'
 })
+/**
+ * @description Reusable text input atom integrated with Angular Reactive Forms
+ * @export
+ * @class InputComponent
+ */
 export class InputComponent {
   id = input.required<string>();
   type = input<string>('text');

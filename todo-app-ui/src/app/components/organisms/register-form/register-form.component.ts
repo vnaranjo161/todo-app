@@ -10,6 +10,11 @@ import { UserRegisterRequest } from '../../../core/shared/models/auth.model';
   imports: [ReactiveFormsModule, ButtonComponent, FormFieldComponent],
   templateUrl: './register-form.component.html'
 })
+/**
+ * @description Registration form organism with name, email, and password fields and validation
+ * @export
+ * @class RegisterFormComponent
+ */
 export class RegisterFormComponent {
 
   loading = input<boolean>(false);
