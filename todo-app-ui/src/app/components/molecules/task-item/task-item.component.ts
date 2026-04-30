@@ -9,6 +9,11 @@ import { IconButtonComponent } from '../../atoms/icon-button/icon-button.compone
   imports: [CheckboxComponent, IconButtonComponent],
   templateUrl: './task-item.component.html',
 })
+/**
+ * @description Task item molecule that displays a single task with its checkbox, description and delete icon
+ * @export
+ * @class TaskItemComponent
+ */
 export class TaskItemComponent {
   task = input.required<Task>();
   toggle = output<{ taskId: string; check: boolean }>();

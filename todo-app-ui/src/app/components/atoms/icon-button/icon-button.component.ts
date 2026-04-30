@@ -5,6 +5,11 @@ import { Component, input } from '@angular/core';
   standalone: true,
   templateUrl: './icon-button.component.html',
 })
+/**
+ * @description Icon button atom that renders a borderless button wrapping any icon via ng-content
+ * @export
+ * @class IconButtonComponent
+ */
 export class IconButtonComponent {
   disabled = input<boolean>(false);
 }

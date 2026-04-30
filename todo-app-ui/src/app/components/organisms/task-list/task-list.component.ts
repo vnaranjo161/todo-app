@@ -8,6 +8,11 @@ import { TaskItemComponent } from '../../molecules/task-item/task-item.component
   imports: [TaskItemComponent],
   templateUrl: './task-list.component.html',
 })
+/**
+ * @description Task list organism that renders the full list of tasks and handles loading and empty states
+ * @export
+ * @class TaskListComponent
+ */
 export class TaskListComponent {
   tasks = input.required<Task[]>();
   loading = input<boolean>(false);
