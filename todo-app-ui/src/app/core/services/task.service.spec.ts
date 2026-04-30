@@ -48,4 +48,15 @@ describe('TaskService', () => {
     expect(req.request.body).toEqual({ check: true });
     req.flush(updated);
   });
+
+  it('should make a POST request to /tasks with the description', () => {
+    const created = { taskId: '3', description: 'Nueva tarea', check: false };
+    service.createTask({ description: 'Nueva tarea' }).subscribe(result => {
+      expect(result).toEqual(created);
+    });
+    const req = httpMock.expectOne(`${BASE_URL}/tasks`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ description: 'Nueva tarea' });
+    req.flush(created);
+  });
 });

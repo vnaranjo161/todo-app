@@ -1,0 +1,10 @@
+<form (ngSubmit)="submit()" class="flex gap-2 p-4 border-b border-gray-100">
+  <app-input
+    id="new-task"
+    placeholder="Nueva tarea..."
+    [control]="control"
+  />
+  <app-button type="submit" [disabled]="creating() || control.invalid">
+    Agregar
+  </app-button>
+</form>

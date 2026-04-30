@@ -8,6 +8,7 @@ export class TaskStoreService {
 
   tasks = signal<Task[]>([]);
   loading = signal<boolean>(false);
+  creating = signal<boolean>(false);
 
   loadTasks(): void {
     this.loading.set(true);
@@ -15,6 +16,18 @@ export class TaskStoreService {
       next: tasks => this.tasks.set(tasks),
       error: () => this.loading.set(false),
       complete: () => this.loading.set(false),
+    });
+  }
+
+  addTask(description: string): void {
+    if (this.creating()) return;
+    this.creating.set(true);
+    this.taskService.createTask({ description }).subscribe({
+      next: task => {
+        this.tasks.update(list => [...list, task]);
+        this.creating.set(false);
+      },
+      error: () => this.creating.set(false),
     });
   }
 
