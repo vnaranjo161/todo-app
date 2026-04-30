@@ -20,4 +20,5 @@ export class TaskListComponent {
   creating = input<boolean>(false);
   toggle = output<{ taskId: string; check: boolean }>();
   create = output<string>();
+  delete = output<string>();
 }

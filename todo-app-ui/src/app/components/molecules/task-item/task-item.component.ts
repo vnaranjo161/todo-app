@@ -17,4 +17,5 @@ import { IconButtonComponent } from '../../atoms/icon-button/icon-button.compone
 export class TaskItemComponent {
   task = input.required<Task>();
   toggle = output<{ taskId: string; check: boolean }>();
+  delete = output<string>();
 }

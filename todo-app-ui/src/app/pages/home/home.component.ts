@@ -32,4 +32,8 @@ export class HomeComponent implements OnInit {
   onAdd(description: string): void {
     this.store.addTask(description);
   }
+
+  onDelete(taskId: string): void {
+    this.store.removeTask(taskId);
+  }
 }

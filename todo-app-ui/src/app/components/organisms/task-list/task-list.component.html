@@ -8,7 +8,7 @@
   } @else {
     @for (task of tasks(); track task.taskId) {
       <li>
-        <app-task-item [task]="task" (toggle)="toggle.emit($event)" />
+        <app-task-item [task]="task" (toggle)="toggle.emit($event)" (delete)="delete.emit($event)" />
       </li>
     }
   }

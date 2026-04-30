@@ -31,6 +31,14 @@ export class TaskStoreService {
     });
   }
 
+  removeTask(taskId: string): void {
+    const previous = this.tasks();
+    this.tasks.update(list => list.filter(t => t.taskId !== taskId));
+    this.taskService.deleteTask(taskId).subscribe({
+      error: () => this.tasks.set(previous),
+    });
+  }
+
   toggleTask(taskId: string, check: boolean): void {
     this.tasks.update(list =>
       list.map(t => t.taskId === taskId ? { ...t, check } : t)

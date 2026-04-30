@@ -49,6 +49,13 @@ describe('TaskService', () => {
     req.flush(updated);
   });
 
+  it('should make a DELETE request to /tasks/:id', () => {
+    service.deleteTask('1').subscribe();
+    const req = httpMock.expectOne(`${BASE_URL}/tasks/1`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
+
   it('should make a POST request to /tasks with the description', () => {
     const created = { taskId: '3', description: 'Nueva tarea', check: false };
     service.createTask({ description: 'Nueva tarea' }).subscribe(result => {
