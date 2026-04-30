@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, UserRegisterRequest, LoginRequest } from '../shared/models/auth.model';
 import { catchError, Observable, throwError, tap } from 'rxjs';
@@ -8,6 +9,7 @@ import { catchError, Observable, throwError, tap } from 'rxjs';
 export class AuthService {
 
   private http = inject(HttpClient);
+  private router = inject(Router);
   private readonly TOKEN_KEY = 'auth_token';
   private readonly BASE_URL = `${environment.apiUrl}`;
 
@@ -37,6 +39,11 @@ export class AuthService {
 
   removeToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
