@@ -47,4 +47,15 @@ describe('TaskItemComponent', () => {
 
     expect(handler).toHaveBeenCalledWith({ taskId: '1', check: true });
   });
+
+  it('should emit delete with taskId when icon button is clicked', () => {
+    const handler = jest.fn();
+    component.delete.subscribe(handler);
+
+    fixture.debugElement
+      .query(By.directive(IconButtonStub))
+      .triggerEventHandler('click', null);
+
+    expect(handler).toHaveBeenCalledWith('1');
+  });
 });

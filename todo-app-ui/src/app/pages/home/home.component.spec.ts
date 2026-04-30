@@ -12,7 +12,7 @@ class TaskListStub {}
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let store: { tasks: ReturnType<typeof signal>; loading: ReturnType<typeof signal>; creating: ReturnType<typeof signal>; loadTasks: jest.Mock; toggleTask: jest.Mock; addTask: jest.Mock };
+  let store: { tasks: ReturnType<typeof signal>; loading: ReturnType<typeof signal>; creating: ReturnType<typeof signal>; loadTasks: jest.Mock; toggleTask: jest.Mock; addTask: jest.Mock; removeTask: jest.Mock };
 
   beforeEach(async () => {
     store = {
@@ -22,6 +22,7 @@ describe('HomeComponent', () => {
       loadTasks: jest.fn(),
       toggleTask: jest.fn(),
       addTask: jest.fn(),
+      removeTask: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -52,5 +53,10 @@ describe('HomeComponent', () => {
   it('should call addTask when onAdd is called', () => {
     component.onAdd('Nueva tarea');
     expect(store.addTask).toHaveBeenCalledWith('Nueva tarea');
+  });
+
+  it('should call removeTask when onDelete is called', () => {
+    component.onDelete('1');
+    expect(store.removeTask).toHaveBeenCalledWith('1');
   });
 });
