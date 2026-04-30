@@ -3,3 +3,7 @@ export interface Task {
   description: string;
   check: boolean;
 }
+
+export interface CreateTaskRequest {
+  description: string;
+}

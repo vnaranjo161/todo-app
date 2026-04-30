@@ -6,7 +6,9 @@
     <app-task-list
       [tasks]="tasks()"
       [loading]="loading()"
+      [creating]="creating()"
       (toggle)="onToggle($event)"
+      (create)="onAdd($event)"
     />
   </div>
 </main>

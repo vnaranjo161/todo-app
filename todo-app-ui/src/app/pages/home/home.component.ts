@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
 
   tasks = this.store.tasks;
   loading = this.store.loading;
+  creating = this.store.creating;
 
   ngOnInit(): void {
     this.store.loadTasks();
@@ -26,5 +27,9 @@ export class HomeComponent implements OnInit {
 
   onToggle(event: { taskId: string; check: boolean }): void {
     this.store.toggleTask(event.taskId, event.check);
+  }
+
+  onAdd(description: string): void {
+    this.store.addTask(description);
   }
 }

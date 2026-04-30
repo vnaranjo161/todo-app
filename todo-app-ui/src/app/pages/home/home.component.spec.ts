@@ -12,14 +12,16 @@ class TaskListStub {}
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let store: { tasks: ReturnType<typeof signal>; loading: ReturnType<typeof signal>; loadTasks: jest.Mock; toggleTask: jest.Mock };
+  let store: { tasks: ReturnType<typeof signal>; loading: ReturnType<typeof signal>; creating: ReturnType<typeof signal>; loadTasks: jest.Mock; toggleTask: jest.Mock; addTask: jest.Mock };
 
   beforeEach(async () => {
     store = {
       tasks: signal([]),
       loading: signal(false),
+      creating: signal(false),
       loadTasks: jest.fn(),
       toggleTask: jest.fn(),
+      addTask: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -45,5 +47,10 @@ describe('HomeComponent', () => {
   it('should call toggleTask when onToggle is called', () => {
     component.onToggle({ taskId: '1', check: true });
     expect(store.toggleTask).toHaveBeenCalledWith('1', true);
+  });
+
+  it('should call addTask when onAdd is called', () => {
+    component.onAdd('Nueva tarea');
+    expect(store.addTask).toHaveBeenCalledWith('Nueva tarea');
   });
 });
