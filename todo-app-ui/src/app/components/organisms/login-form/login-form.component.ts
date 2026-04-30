@@ -10,6 +10,11 @@ import { FormFieldComponent } from '../../molecules/form-field/form-field.compon
   imports: [ReactiveFormsModule, ButtonComponent, FormFieldComponent],
   templateUrl: './login-form.component.html'
 })
+/**
+ * @description Login form organism with email and password fields and validation
+ * @export
+ * @class LoginFormComponent
+ */
 export class LoginFormComponent {
   
   loading = input<boolean>(false);

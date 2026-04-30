@@ -11,6 +11,11 @@ import { LoginRequest } from '../../core/shared/models/auth.model';
   imports: [LoginFormComponent, RouterLink],
   templateUrl: './login.page.html'
 })
+/**
+ * @description Login page that hosts the login form and handles form submission
+ * @export
+ * @class LoginPage
+ */
 export class LoginPage {
   private auth = inject(AuthService);
   private notification = inject(NotificationService);
