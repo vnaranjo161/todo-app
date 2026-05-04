@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Getter
 @Builder
 @Document(collection = "tasks")
@@ -13,9 +15,9 @@ public class TaskDocument {
 
     @Id
     private String id;
-
     @Indexed
     private String userId;
     private String description;
     private boolean check;
+    private Instant createdAt;
 }

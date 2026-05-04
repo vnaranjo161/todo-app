@@ -7,6 +7,7 @@ import com.todo.app.infraestructure.persistence.repository.TaskMongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,10 +23,10 @@ public class TaskRepositoryAdapter implements TaskRepository {
                 .userId(task.getUserId())
                 .description(task.getDescription())
                 .check(task.isCheck())
+                .createdAt(task.getCreatedAt())
                 .build();
 
-        TaskDocument saved = mongoRepository.save(document);
-        return taskDocumentToTask(saved);
+        return taskDocumentToTask(mongoRepository.save(document));
     }
 
     @Override
@@ -34,12 +35,20 @@ public class TaskRepositoryAdapter implements TaskRepository {
                 .map(this::taskDocumentToTask);
     }
 
+    @Override
+    public List<Task> findAllByUserId(String userId) {
+        return mongoRepository.findAllByUserIdOrderByCreatedAtAsc(userId).stream()
+                .map(this::taskDocumentToTask)
+                .toList();
+    }
+
     private Task taskDocumentToTask(TaskDocument document) {
         return Task.builder()
                 .taskId(document.getId())
                 .userId(document.getUserId())
                 .description(document.getDescription())
                 .check(document.isCheck())
+                .createdAt(document.getCreatedAt())
                 .build();
     }
 }
