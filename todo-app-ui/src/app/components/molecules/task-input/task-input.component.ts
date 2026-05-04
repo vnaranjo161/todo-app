@@ -1,12 +1,12 @@
 import { Component, input, output } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../atoms/input/input.component';
 import { ButtonComponent } from '../../atoms/button/button.component';
 
 @Component({
   selector: 'app-task-input',
   standalone: true,
-  imports: [ReactiveFormsModule, InputComponent, ButtonComponent],
+  imports: [FormsModule, ReactiveFormsModule, InputComponent, ButtonComponent],
   templateUrl: './task-input.component.html',
 })
 /**

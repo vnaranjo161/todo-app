@@ -1,4 +1,4 @@
-package com.todo.app.application.usecases.tasks;
+package com.todo.app.domain.port.in.tasks;
 
 import com.todo.app.application.dto.response.TaskResponseDTO;
 

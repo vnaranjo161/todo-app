@@ -1,10 +1,10 @@
-package com.todo.app.domain.service;
+package com.todo.app.application.service;
 
 import com.todo.app.application.dto.request.LoginUserDTO;
 import com.todo.app.application.dto.request.RegisterUserDTO;
 import com.todo.app.application.dto.response.RegisterUserResponseDTO;
-import com.todo.app.application.usecases.LoginUserUseCase;
-import com.todo.app.application.usecases.RegisterUserUseCase;
+import com.todo.app.domain.port.in.LoginUserUseCase;
+import com.todo.app.domain.port.in.RegisterUserUseCase;
 import com.todo.app.domain.exception.EmailAlreadyExistsException;
 import com.todo.app.domain.exception.InvalidCredentialsException;
 import com.todo.app.domain.model.User;

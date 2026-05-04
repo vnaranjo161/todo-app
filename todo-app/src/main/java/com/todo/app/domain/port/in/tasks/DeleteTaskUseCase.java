@@ -1,4 +1,4 @@
-package com.todo.app.application.usecases.tasks;
+package com.todo.app.domain.port.in.tasks;
 
 public interface DeleteTaskUseCase {
 
