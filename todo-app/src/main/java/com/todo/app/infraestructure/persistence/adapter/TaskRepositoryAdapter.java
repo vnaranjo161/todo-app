@@ -42,6 +42,11 @@ public class TaskRepositoryAdapter implements TaskRepository {
                 .toList();
     }
 
+    @Override
+    public void deleteById(String taskId) {
+        mongoRepository.deleteById(taskId);
+    }
+
     private Task taskDocumentToTask(TaskDocument document) {
         return Task.builder()
                 .taskId(document.getId())

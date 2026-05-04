@@ -10,4 +10,5 @@ public interface TaskRepository {
     Task save(Task task);
     Optional<Task> findByTaskIdAndUserId(String taskId, String userId);
     List<Task> findAllByUserId(String userId);
+    void deleteById(String taskId);
 }

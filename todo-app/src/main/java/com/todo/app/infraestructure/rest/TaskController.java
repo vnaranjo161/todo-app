@@ -4,6 +4,7 @@ import com.todo.app.application.dto.request.CreateTaskDTO;
 import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
 import com.todo.app.application.usecases.tasks.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.DeleteTaskUseCase;
 import com.todo.app.application.usecases.tasks.GetUserTasksUseCase;
 import com.todo.app.application.usecases.tasks.UpdateTaskStatusUseCase;
 import com.todo.app.infraestructure.security.AuthenticatedUserService;
@@ -23,6 +24,7 @@ public class TaskController {
     private final CreateTaskUseCase createTaskUseCase;
     private final UpdateTaskStatusUseCase updateTaskStatusUseCase;
     private final GetUserTasksUseCase getUserTasksUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
     private final AuthenticatedUserService authenticatedUserService;
 
     @PostMapping
@@ -36,6 +38,13 @@ public class TaskController {
     public ResponseEntity<List<TaskResponseDTO>> getUserTasks() {
         String userId = authenticatedUserService.getAuthenticatedUserId();
         return ResponseEntity.ok(getUserTasksUseCase.getUserTasks(userId));
+    }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<Void> delete(@PathVariable String taskId) {
+        String userId = authenticatedUserService.getAuthenticatedUserId();
+        deleteTaskUseCase.deleteTask(taskId, userId);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{taskId}")

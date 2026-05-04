@@ -4,6 +4,7 @@ import com.todo.app.application.dto.request.CreateTaskDTO;
 import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
 import com.todo.app.application.usecases.tasks.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.DeleteTaskUseCase;
 import com.todo.app.application.usecases.tasks.GetUserTasksUseCase;
 import com.todo.app.application.usecases.tasks.UpdateTaskStatusUseCase;
 import com.todo.app.domain.exception.TaskNotFoundException;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TaskService implements CreateTaskUseCase, UpdateTaskStatusUseCase, GetUserTasksUseCase {
+public class TaskService implements CreateTaskUseCase, UpdateTaskStatusUseCase, GetUserTasksUseCase, DeleteTaskUseCase {
 
     private final TaskRepository taskRepository;
 
@@ -54,6 +55,14 @@ public class TaskService implements CreateTaskUseCase, UpdateTaskStatusUseCase, 
         return taskRepository.findAllByUserId(userId).stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @Override
+    public void deleteTask(String taskId, String userId) {
+        taskRepository.findByTaskIdAndUserId(taskId, userId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        taskRepository.deleteById(taskId);
     }
 
     private TaskResponseDTO toResponse(Task task) {
