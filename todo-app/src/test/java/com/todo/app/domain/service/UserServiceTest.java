@@ -1,12 +1,16 @@
 package com.todo.app.domain.service;
 
+import com.todo.app.application.dto.request.LoginUserDTO;
 import com.todo.app.application.dto.request.RegisterUserDTO;
 import com.todo.app.application.dto.response.RegisterUserResponseDTO;
 import com.todo.app.domain.exception.EmailAlreadyExistsException;
+import com.todo.app.domain.exception.InvalidCredentialsException;
 import com.todo.app.domain.model.User;
 import com.todo.app.domain.port.out.PasswordHasher;
 import com.todo.app.domain.port.out.TokenGenerator;
 import com.todo.app.domain.port.out.UserRepository;
+
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -75,5 +79,58 @@ class UserServiceTest {
         verify(userRepository).save(argThat(user ->
                 "bcrypt-hash".equals(user.getPassword()) && !"plaintext".equals(user.getPassword())
         ));
+    }
+
+    @Test
+    void loginUser_returnsTokenAndUserData_whenCredentialsAreValid() {
+        LoginUserDTO dto = new LoginUserDTO("john@example.com", "secret123");
+        User storedUser = User.builder()
+                .userId("user-id-1")
+                .name("John Doe")
+                .email("john@example.com")
+                .password("hashed")
+                .build();
+
+        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.of(storedUser));
+        when(passwordHasher.matches("secret123", "hashed")).thenReturn(true);
+        when(tokenGenerator.generateToken(storedUser)).thenReturn("jwt-token");
+
+        RegisterUserResponseDTO response = userService.loginUser(dto);
+
+        assertThat(response.token()).isEqualTo("jwt-token");
+        assertThat(response.name()).isEqualTo("John Doe");
+        assertThat(response.userId()).isEqualTo("user-id-1");
+    }
+
+    @Test
+    void loginUser_throwsInvalidCredentialsException_whenEmailNotFound() {
+        LoginUserDTO dto = new LoginUserDTO("unknown@example.com", "secret123");
+
+        when(userRepository.findByEmail("unknown@example.com")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.loginUser(dto))
+                .isInstanceOf(InvalidCredentialsException.class);
+
+        verify(passwordHasher, never()).matches(any(), any());
+        verify(tokenGenerator, never()).generateToken(any());
+    }
+
+    @Test
+    void loginUser_throwsInvalidCredentialsException_whenPasswordIsWrong() {
+        LoginUserDTO dto = new LoginUserDTO("john@example.com", "wrong-password");
+        User storedUser = User.builder()
+                .userId("user-id-1")
+                .name("John Doe")
+                .email("john@example.com")
+                .password("hashed")
+                .build();
+
+        when(userRepository.findByEmail("john@example.com")).thenReturn(Optional.of(storedUser));
+        when(passwordHasher.matches("wrong-password", "hashed")).thenReturn(false);
+
+        assertThatThrownBy(() -> userService.loginUser(dto))
+                .isInstanceOf(InvalidCredentialsException.class);
+
+        verify(tokenGenerator, never()).generateToken(any());
     }
 }
