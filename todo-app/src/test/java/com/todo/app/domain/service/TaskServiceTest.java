@@ -3,6 +3,7 @@ package com.todo.app.domain.service;
 import com.todo.app.application.dto.request.CreateTaskDTO;
 import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
+import com.todo.app.application.service.TaskService;
 import com.todo.app.domain.exception.TaskNotFoundException;
 import com.todo.app.domain.model.Task;
 import com.todo.app.domain.port.out.TaskRepository;

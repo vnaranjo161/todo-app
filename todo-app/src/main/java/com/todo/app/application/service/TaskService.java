@@ -1,12 +1,12 @@
-package com.todo.app.domain.service;
+package com.todo.app.application.service;
 
 import com.todo.app.application.dto.request.CreateTaskDTO;
 import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
-import com.todo.app.application.usecases.tasks.CreateTaskUseCase;
-import com.todo.app.application.usecases.tasks.DeleteTaskUseCase;
-import com.todo.app.application.usecases.tasks.GetUserTasksUseCase;
-import com.todo.app.application.usecases.tasks.UpdateTaskStatusUseCase;
+import com.todo.app.domain.port.in.tasks.CreateTaskUseCase;
+import com.todo.app.domain.port.in.tasks.DeleteTaskUseCase;
+import com.todo.app.domain.port.in.tasks.GetUserTasksUseCase;
+import com.todo.app.domain.port.in.tasks.UpdateTaskStatusUseCase;
 import com.todo.app.domain.exception.TaskNotFoundException;
 import com.todo.app.domain.model.Task;
 import com.todo.app.domain.port.out.TaskRepository;
