@@ -14,14 +14,14 @@ export class AuthService {
   private readonly BASE_URL = `${environment.apiUrl}`;
 
   register(data: UserRegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.BASE_URL}/register`, data).pipe(
+    return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/register`, data).pipe(
       tap(response => this.saveSession(response)),
       catchError(this.handleError)
     );
   }
 
   login(body: LoginRequest) {
-    return this.http.post<AuthResponse>(`${this.BASE_URL}/login`, body).pipe(
+    return this.http.post<AuthResponse>(`${this.BASE_URL}/auth/login`, body).pipe(
       tap(response => this.saveSession(response)),
       catchError(this.handleError)
     );

@@ -1,7 +1,9 @@
 package com.todo.app.infraestructure.rest;
 
+import com.todo.app.application.dto.request.LoginUserDTO;
 import com.todo.app.application.dto.request.RegisterUserDTO;
 import com.todo.app.application.dto.response.RegisterUserResponseDTO;
+import com.todo.app.application.usecases.LoginUserUseCase;
 import com.todo.app.application.usecases.RegisterUserUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +17,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final RegisterUserUseCase registerUserUseCase;
+    private final LoginUserUseCase loginUserUseCase;
 
     @PostMapping("/register")
     public ResponseEntity<RegisterUserResponseDTO> register(@Valid @RequestBody RegisterUserDTO dto) {
         RegisterUserResponseDTO response = registerUserUseCase.registerUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<RegisterUserResponseDTO> login(@Valid @RequestBody LoginUserDTO dto) {
+        RegisterUserResponseDTO response = loginUserUseCase.loginUser(dto);
+        return ResponseEntity.ok(response);
     }
 }
