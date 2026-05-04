@@ -1,8 +1,10 @@
 package com.todo.app.infraestructure.rest;
 
 import com.todo.app.application.dto.request.CreateTaskDTO;
+import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
-import com.todo.app.application.usecases.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.UpdateTaskStatusUseCase;
 import com.todo.app.infraestructure.security.AuthenticatedUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
     private final CreateTaskUseCase createTaskUseCase;
+    private final UpdateTaskStatusUseCase updateTaskStatusUseCase;
     private final AuthenticatedUserService authenticatedUserService;
 
     @PostMapping
@@ -23,5 +26,14 @@ public class TaskController {
         String userId = authenticatedUserService.getAuthenticatedUserId();
         TaskResponseDTO response = createTaskUseCase.createTask(dto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping("/{taskId}")
+    public ResponseEntity<TaskResponseDTO> updateStatus(
+            @PathVariable String taskId,
+            @Valid @RequestBody UpdateTaskStatusDTO dto) {
+        String userId = authenticatedUserService.getAuthenticatedUserId();
+        TaskResponseDTO response = updateTaskStatusUseCase.updateTaskStatus(taskId, dto, userId);
+        return ResponseEntity.ok(response);
     }
 }

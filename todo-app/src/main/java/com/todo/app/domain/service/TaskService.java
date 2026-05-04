@@ -1,8 +1,11 @@
 package com.todo.app.domain.service;
 
 import com.todo.app.application.dto.request.CreateTaskDTO;
+import com.todo.app.application.dto.request.UpdateTaskStatusDTO;
 import com.todo.app.application.dto.response.TaskResponseDTO;
-import com.todo.app.application.usecases.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.CreateTaskUseCase;
+import com.todo.app.application.usecases.tasks.UpdateTaskStatusUseCase;
+import com.todo.app.domain.exception.TaskNotFoundException;
 import com.todo.app.domain.model.Task;
 import com.todo.app.domain.port.out.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TaskService implements CreateTaskUseCase {
+public class TaskService implements CreateTaskUseCase, UpdateTaskStatusUseCase {
 
     private final TaskRepository taskRepository;
 
@@ -26,6 +29,23 @@ public class TaskService implements CreateTaskUseCase {
                 .build();
 
         Task saved = taskRepository.save(task);
-        return new TaskResponseDTO(saved.getTaskId(), saved.getDescription(), saved.isCheck());
+        return toResponse(saved);
+    }
+
+    @Override
+    public TaskResponseDTO updateTaskStatus(String taskId, UpdateTaskStatusDTO dto, String userId) {
+
+        Task existing = taskRepository.findByTaskIdAndUserId(taskId, userId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        existing.setCheck(dto.check());
+
+        Task saved = taskRepository.save(existing);
+
+        return toResponse(saved);
+    }
+
+    private TaskResponseDTO toResponse(Task task) {
+        return new TaskResponseDTO(task.getTaskId(), task.getDescription(), task.isCheck());
     }
 }
