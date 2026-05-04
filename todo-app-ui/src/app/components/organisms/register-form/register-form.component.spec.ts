@@ -1,0 +1,94 @@
+import { Component, input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RegisterFormComponent } from './register-form.component';
+import { UserRegisterRequest } from '../../../core/shared/models/auth.model';
+
+@Component({ selector: 'app-form-field', template: '', standalone: true })
+class FormFieldStub {
+  label = input.required<string>();
+  inputId = input.required<string>();
+  inputType = input<string>('text');
+  placeholder = input<string>('');
+  control = input<FormControl>(new FormControl(''));
+  patternError = input<string>('');
+}
+
+@Component({ selector: 'app-button', template: '', standalone: true })
+class ButtonStub {
+  type = input<'button' | 'submit' | 'reset'>('button');
+  disabled = input<boolean>(false);
+}
+
+describe('RegisterFormComponent', () => {
+  let fixture: ComponentFixture<RegisterFormComponent>;
+  let component: RegisterFormComponent;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RegisterFormComponent],
+    }).overrideComponent(RegisterFormComponent, {
+      set: { imports: [ReactiveFormsModule, FormFieldStub, ButtonStub] },
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(RegisterFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have an invalid form by default', () => {
+    expect(component.form.invalid).toBe(true);
+  });
+
+  it('should not emit formSubmit when the form is invalid', () => {
+    const handler = jest.fn();
+    component.formSubmit.subscribe(handler);
+    component.submit();
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('should mark all controls as touched when submitting an invalid form', () => {
+    component.submit();
+    expect(component.form.controls.name.touched).toBe(true);
+    expect(component.form.controls.email.touched).toBe(true);
+    expect(component.form.controls.password.touched).toBe(true);
+  });
+
+  it('should emit formSubmit with form values when the form is valid', () => {
+    const handler = jest.fn();
+    component.formSubmit.subscribe(handler);
+
+    component.form.setValue({ name: 'Juan Perez', email: 'juan@email.com', password: 'password123' });
+    component.submit();
+
+    expect(handler).toHaveBeenCalledWith<[UserRegisterRequest]>({
+      name: 'Juan Perez',
+      email: 'juan@email.com',
+      password: 'password123',
+    } as unknown as UserRegisterRequest);
+  });
+
+  it('should fail validation for name with numbers', () => {
+    component.form.controls.name.setValue('Juan123');
+    expect(component.form.controls.name.hasError('pattern')).toBe(true);
+  });
+
+  it('should fail validation for invalid email format', () => {
+    component.form.controls.email.setValue('not-an-email');
+    expect(component.form.controls.email.hasError('email')).toBe(true);
+  });
+
+  it('should fail validation for password shorter than 8 chars', () => {
+    component.form.controls.password.setValue('short');
+    expect(component.form.controls.password.hasError('minlength')).toBe(true);
+  });
+
+  it('should pass validation for a valid name with letters and spaces', () => {
+    component.form.controls.name.setValue('María José');
+    expect(component.form.controls.name.valid).toBe(true);
+  });
+});

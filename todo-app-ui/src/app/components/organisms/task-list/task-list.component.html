@@ -1,0 +1,15 @@
+<app-task-input [creating]="creating()" (create)="create.emit($event)" />
+
+<ul class="divide-y divide-gray-100">
+  @if (loading()) {
+    <li class="py-6 text-center text-sm text-gray-400">Cargando tareas...</li>
+  } @else if (tasks().length === 0) {
+    <li class="py-6 text-center text-sm text-gray-400">No hay tareas pendientes</li>
+  } @else {
+    @for (task of tasks(); track task.taskId) {
+      <li>
+        <app-task-item [task]="task" (toggle)="toggle.emit($event)" (delete)="delete.emit($event)" />
+      </li>
+    }
+  }
+</ul>
